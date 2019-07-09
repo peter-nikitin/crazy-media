@@ -1,9 +1,9 @@
 {
-  "name": "intuition-base",
-  "version": "1.3.0",
-  "description": "База для проектов Интуиции.",
-  "repository": "https://gitlab.com/mkalygin/intuition-base.git",
-  "author": "Дизайн-бюро Интуиция",
+  "name": "crazy-media",
+  "version": "1.0.0",
+  "description": "Бешенное СМИ - проект Парка Интуиции.",
+  "repository": "https://github.com/peter-nikitin/crazy-media",
+  "author": "Denis Kopylov, Αlan, Петр Никитин",
   "license": "MIT",
   "scripts": {
     "start": "yarn && yarn clear && npm-run-all --parallel open serve",
