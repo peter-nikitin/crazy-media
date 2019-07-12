@@ -6,6 +6,7 @@ const router = require('./router');
 const helpers = require('./helpers');
 const { notFound } = require('./middlewares');
 const config = require('./config');
+const db = require('./db');
 
 // Initialize Express app.
 const app = express();
@@ -44,9 +45,15 @@ app.use('/', router);
 app.use(notFound());
 
 // Start server listening.
-app.listen(config.port, config.host, error => {
-  if (error) throw error;
+db.connect()
+  .then(
+    app.listen(config.port, config.host, error => {
+      if (error) throw error;
 
-  // eslint-disable-next-line
-  console.log(`Listening at ${url}...`);
-});
+      // eslint-disable-next-line
+      console.log(`Listening at ${url}...`);
+    })
+  )
+  .catch(err => {
+    console.log(err);
+  });
