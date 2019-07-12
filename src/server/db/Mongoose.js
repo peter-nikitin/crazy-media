@@ -10,7 +10,7 @@ class Mongoose {
       channel_id: String,
       lastMessageId: Number,
     });
-
+    console.log('ChannelModel made');
     this.ChannelModel = mongoose.model('ChannelSchema', ChannelSchema);
   }
 
@@ -19,6 +19,7 @@ class Mongoose {
       channel_id: String,
       lastMessageId: Number,
     });
+    console.log('PostModel made');
 
     this.PostModel = mongoose.model('PostSchema', PostSchema);
   }
