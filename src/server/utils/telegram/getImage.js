@@ -1,4 +1,5 @@
 const fs = require('fs');
+const config = require('../../config');
 
 const telegram = require('./init');
 
