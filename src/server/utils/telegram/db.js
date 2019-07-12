@@ -26,21 +26,26 @@ async function writeFile(json, file) {
 
 async function updateLastMsgId(channelName, num) {
   try {
-    db.ChannelModel.findOneAndUpdate(
-      {
-        name: channelName,
-      },
-      {
-        lastMsgId: num,
-      },
-      { new: true },
-      (err, doc) => {
-        if (err) {
-          console.log(`${err} shit happens.`);
-        }
-        console.log(`${doc} successfully saved.`);
-      }
-    );
+    const channel = new db.ChannelModel({
+      name: channelName,
+    });
+    channel.save();
+    console.log(channel);
+    // channel.findOneAndUpdate(
+    //   {
+    //     name: channelName,
+    //   },
+    //   {
+    //     lastMsgId: num,
+    //   },
+    //   { new: true },
+    //   (err, doc) => {
+    //     if (err) {
+    //       console.log(`${err} shit happens.`);
+    //     }
+    //     console.log(`${doc} successfully saved.`);
+    //   }
+    // );
   } catch (err) {
     console.log(`error, couldnt save to file ${err}`);
   }
@@ -50,13 +55,13 @@ async function getLastMsgId(channelName) {
   try {
     const channel = new db.ChannelModel();
     let LastMsgId;
-    channel
-      .findOneAndUpdate({
-        name: channelName,
-      })
-      .exec((err, id) => {
-        LastMsgId = id;
-      });
+    // channel
+    //   .findOneAndUpdate({
+    //     name: channelName,
+    //   })
+    //   .exec((err, id) => {
+    //     LastMsgId = id;
+    //   });
     return LastMsgId;
   } catch (err) {
     console.log(
