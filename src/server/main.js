@@ -6,7 +6,7 @@ const router = require('./router');
 const helpers = require('./helpers');
 const { notFound } = require('./middlewares');
 const config = require('./config');
-const db = require('./db');
+const { connectToDB, models } = require('./db');
 
 // Initialize Express app.
 const app = express();
@@ -44,16 +44,44 @@ app.use('/', router);
 // Show 404 page.
 app.use(notFound());
 
+const eraseDatabaseOnSync = true;
+
 // Start server listening.
-db.connect()
-  .then(
+connectToDB()
+  .then(async () => {
+    if (eraseDatabaseOnSync) {
+      await Promise.all([
+        models.Channel.deleteMany({}),
+        models.Post.deleteMany({}),
+      ]);
+
+      createInitialChannel();
+    }
+
     app.listen(config.port, config.host, error => {
       if (error) throw error;
 
       // eslint-disable-next-line
       console.log(`Listening at ${url}...`);
-    })
-  )
+    });
+  })
   .catch(err => {
     console.log(err);
   });
+
+const createInitialChannel = async () => {
+  const channel1 = new models.Channel({
+    name: 'Test',
+    title: 'Тестовое название',
+    lastMsgIf: 1,
+  });
+
+  const post1 = new models.Post({
+    id: '1',
+    message: 'test message',
+    channel: channel1.id,
+  });
+
+  await channel1.save();
+  await post1.save();
+};
