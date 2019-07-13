@@ -1,76 +1,97 @@
 const fs = require('fs');
 const config = require('../../config');
+// const { connectToDB, models } = require('../../db');
 
-const db = require('../../db');
+// const {models} = require('../../db');
 
 const CHATDB = config.chatdb;
 const DBFILE = config.dbfile;
 
-db.connect();
+// connectToDB();
 
-async function readDb(file) {
-  return new Promise((res, rej) => {
-    fs.readFile(file, 'utf8', (err, data) => {
-      err ? rej(err) : res(data);
-    });
-  });
-}
+// async function readDb(file) {
+//   return new Promise((res, rej) => {
+//     fs.readFile(file, 'utf8', (err, data) => {
+//       err ? rej(err) : res(data);
+//     });
+//   });
+// }
 
-async function writeFile(json, file) {
-  return new Promise((res, rej) => {
-    fs.writeFile(file, JSON.stringify(json, null, 2), 'utf8', err => {
-      err ? rej(err) : res();
-    });
-  });
-}
+// async function writeFile(json, file) {
+//   return new Promise((res, rej) => {
+//     fs.appendFile(file, JSON.stringify(json, null, 2), 'utf8', err => {
+//       err ? rej(err) : res();
+//     });
+//   });
+// }
 
-async function updateLastMsgId(channelName, num) {
+async function updateLastMsgId(chennalName, LastMsgId) {
   try {
-    const channel = new db.ChannelModel({
-      name: channelName,
-    });
-    channel.save();
-    console.log(channel);
-    // channel.findOneAndUpdate(
-    //   {
-    //     name: channelName,
-    //   },
-    //   {
-    //     lastMsgId: num,
-    //   },
-    //   { new: true },
-    //   (err, doc) => {
-    //     if (err) {
-    //       console.log(`${err} shit happens.`);
-    //     }
-    //     console.log(`${doc} successfully saved.`);
-    //   }
-    // );
+    models.Channel.updateLastMsgId(chennalName);
   } catch (err) {
-    console.log(`error, couldnt save to file ${err}`);
+    console.log('error, couldnt save to file ' + err);
   }
 }
 
-async function getLastMsgId(channelName) {
+async function getLastMsgId(chennalName) {
   try {
-    const channel = new db.ChannelModel();
-    let LastMsgId;
-    // channel
-    //   .findOneAndUpdate({
-    //     name: channelName,
-    //   })
-    //   .exec((err, id) => {
-    //     LastMsgId = id;
-    //   });
-    return LastMsgId;
+    const readFile = await readDb(DBFILE);
+    const file = JSON.parse(readFile);
+    return file.chennalName;
   } catch (err) {
     console.log(
-      `file not found so making a empty one and adding default value ${err}`
+      'file not found so making a empty one and adding default value ' + err
     );
     await updateLastMsgId(1);
     return 1;
   }
 }
+
+// async function updateLastMsgId(channelName, num) {
+//   try {
+
+//     const db = readDb(DBFILE);
+//     console.log(db);
+//     // channel.findOneAndUpdate(
+//     //   {
+//     //     name: channelName,
+//     //   },
+//     //   {
+//     //     lastMsgId: num,
+//     //   },
+//     //   { new: true },
+//     //   (err, doc) => {
+//     //     if (err) {
+//     //       console.log(`${err} shit happens.`);
+//     //     }
+//     //     console.log(`${doc} successfully saved.`);
+//     //   }
+//     // );
+//   } catch (err) {
+//     console.log(`error, couldnt save to file ${err}`);
+//   }
+// }
+
+// async function getLastMsgId(channelName) {
+//   try {
+//     const channel = new db.ChannelModel();
+//     let LastMsgId;
+//     // channel
+//     //   .findOneAndUpdate({
+//     //     name: channelName,
+//     //   })
+//     //   .exec((err, id) => {
+//     //     LastMsgId = id;
+//     //   });
+//     return LastMsgId;
+//   } catch (err) {
+//     console.log(
+//       `file not found so making a empty one and adding default value ${err}`
+//     );
+//     await updateLastMsgId(1);
+//     return 1;
+//   }
+// }
 
 async function getChat() {
   try {
