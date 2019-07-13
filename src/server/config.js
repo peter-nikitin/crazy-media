@@ -40,14 +40,15 @@ module.exports = {
     storage: process.env.TELEGRAM_FILE,
     devServer: false,
     msgHistory: {
-      maxMsg: 100,
-      limit: 50,
+      maxMsg: 20,
+      limit: 10,
     },
     getChat: {
       limit: 150,
     },
   },
   dbfile: process.env.DB_FILE,
+  selected: process.env.SELECTED,
   chatdb: process.env.CHAR_FILE,
   server: process.env.SERVER_URL,
 };
