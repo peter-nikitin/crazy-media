@@ -10,17 +10,43 @@ const channelSchema = new mongoose.Schema({
   title: {
     type: String,
   },
-  lastMsgIf: {
+  lastMsgId: {
     type: Number,
+  },
+  channel_id: {
+    type: String,
+  },
+  access_hash: {
+    type: String,
   },
 });
 
-channelSchema.static.findByName = async function(name) {
-  const user = await this.findOne({
+channelSchema.method.updateLastMsgId = async function(name, lastMsgId) {
+  const channel = await this.findOneAndUpdate(
+    {
+      name,
+    },
+    {
+      name,
+      lastMsgId,
+    }
+  );
+
+  return channel;
+};
+
+channelSchema.method.getLastMsgId = async function getLastMsgId(name) {
+  const { lastMsgId } = await this.findOne({
     name,
   });
 
-  return user;
+  return lastMsgId;
+};
+
+channelSchema.method.getAllChannels = async function getAllChannels() {
+  const channels = await this.find({});
+  console.log(channels);
+  return channels;
 };
 
 channelSchema.pre('remove', function(next) {
