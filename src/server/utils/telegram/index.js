@@ -1,7 +1,6 @@
-const fs = require('fs');
 const getChatHistory = require('./getChatHistory');
-
 const { checkLogin } = require('./node-storage');
+const { models } = require('../../db');
 
 const run = async chat => {
   await getChatHistory(chat);
@@ -9,18 +8,18 @@ const run = async chat => {
 
 const start = async () => {
   await checkLogin();
+  const chat = await models.Channel.find({});
 
-  const chat = await fs.readFile('../storage/selected.json', (err, data) => {
-    if (err) throw err;
-    console.log(data);
-  });
+  run(chat[0]);
 
-  let timerId = setTimeout(function tick() {
-    chat.forEach(element => {
-      run(element);
-    });
-    timerId = setTimeout(tick, 60000);
-  }, 2000);
+  // let timerId = setTimeout(function tick() {
+
+  //   chat.forEach(element => {
+  //     run(element);
+  //     // console.log(element);
+  //   });
+  //   timerId = setTimeout(tick, 60000);
+  // }, 2000);
 };
 
-module.exports = start();
+module.exports = start;
