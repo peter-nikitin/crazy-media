@@ -1,4 +1,12 @@
-const Mongoose = require('./Mongoose');
+const mongoose = require('mongoose');
+
+const Channel = require('./models/channel');
+const Post = require('./models/post');
+
 const config = require('../config');
 
-module.exports = new Mongoose(config.mongoPath);
+const connectToDB = () => mongoose.connect(config.mongoPath);
+
+const models = { Channel, Post };
+
+module.exports = { connectToDB, models };
