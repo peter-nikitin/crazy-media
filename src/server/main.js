@@ -7,6 +7,7 @@ const helpers = require('./helpers');
 const { notFound } = require('./middlewares');
 const config = require('./config');
 const { connectToDB, models } = require('./db');
+const loadChannels = require('./helpers/loadChannels');
 
 // Initialize Express app.
 const app = express();
@@ -55,7 +56,7 @@ connectToDB()
         models.Post.deleteMany({}),
       ]);
 
-      createInitialChannel();
+      loadChannels();
     }
 
     app.listen(config.port, config.host, error => {
@@ -68,20 +69,3 @@ connectToDB()
   .catch(err => {
     console.log(err);
   });
-
-const createInitialChannel = async () => {
-  const channel1 = new models.Channel({
-    name: 'Test',
-    title: 'Тестовое название',
-    lastMsgIf: 1,
-  });
-
-  const post1 = new models.Post({
-    id: '1',
-    message: 'test message',
-    channel: channel1.id,
-  });
-
-  await channel1.save();
-  await post1.save();
-};
