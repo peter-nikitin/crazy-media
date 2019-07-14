@@ -3,21 +3,23 @@ const { checkLogin } = require('./node-storage');
 const { models } = require('../../db');
 
 const run = async chat => {
-  await getChatHistory(chat);
+  try {
+    await getChatHistory(chat);
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 const start = async () => {
   await checkLogin();
   const chat = await models.Channel.find({});
 
-  run(chat[0]);
+  chat.forEach(element => {
+    run(element);
+    // console.log(element);
+  });
 
   // let timerId = setTimeout(function tick() {
-
-  //   chat.forEach(element => {
-  //     run(element);
-  //     // console.log(element);
-  //   });
   //   timerId = setTimeout(tick, 60000);
   // }, 2000);
 };

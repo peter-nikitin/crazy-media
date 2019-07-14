@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable no-await-in-loop */
 /* eslint-disable no-undef */
 const fs = require('fs');
@@ -7,71 +8,73 @@ const telegram = require('./init');
 const getImage = require('./getImage');
 const { models } = require('../../db');
 
-const messagesClear = [];
+async function saveEachMessage(messages, { _id, name }) {
+  try {
+    for (let i = 0; i < messages.length; i++) {
+      let url = '';
+      let imgUrl = '';
+      if (messages[i].media) {
+        if (messages[i].media.webpage) {
+          url = messages[i].media.webpage.url;
+        }
+        if (messages[i].media.photo) {
+          imgUrl = `/static/posts/${name}_${messages[i].id}.jpg`;
+          getImage(messages[i], `${name}_${messages[i].id}`);
+        }
+        // console.log(messages[i].id);
+        const newPost = new models.Post({
+          post_id: `${name}_${messages[i].id}`,
+          message: messages[i].message,
+          url,
+          imgUrl,
+          channel: _id,
+        });
 
-async function asyncForEach(array, channel) {
-  for (let i = 0; i < array.length; i++) {
-    let url = '';
-    let imgUrl = '';
-    const { id } = array[i];
-    if (array[i].media) {
-      if (array[i].media.webpage) {
-        url = array[i].media.webpage.url;
+        await newPost.save();
       }
-      if (array[i].media.photo) {
-        imgUrl = `/static/posts/${id}.jpg`;
-        await getImage(array[i], id);
-      }
-
-      const post = new models.Post({
-        id,
-        message: array[i].message,
-        url,
-        imgUrl,
-        channel,
-      });
-
-      await post.save();
     }
+  } catch (err) {
+    throw err;
   }
-
-  // await fs.appendFile(
-  //   'src/storage/messages.json',
-  //   JSON.stringify(messagesClear, null, 2),
-  //   'utf8',
-  //   err => {
-  //     if (err) {
-  //       console.log(`There was an error writing the image ${err}`);
-  //     } else {
-  //       console.log('Messages was written');
-  //     }
-  //   }
-  // );
 }
 
-async function updateLastMsgId(channel, lastMsgId) {
+const uniqueArray = function uniqueArray(myArr, prop) {
+  return myArr.filter(
+    (obj, pos, arr) =>
+      arr.map(mapObj => mapObj[prop]).indexOf(obj[prop]) === pos
+  );
+};
+
+async function updateLastMsgId({ name }, lastMsgId) {
   try {
-    await models.Channel.findOneAndUpdate({ name: channel }, { lastMsgId });
+    await models.Channel.findOneAndUpdate({ name }, { name, lastMsgId });
   } catch (err) {
     console.log(`error, couldnt save to file ${err}`);
   }
 }
+async function writeFile(json, file) {
+  return new Promise((res, rej) => {
+    fs.appendFile(file, JSON.stringify(json, null, 2), 'utf8', err => {
+      err ? rej(err) : res();
+    });
+  });
+}
 
-async function getLastMsgId(channel) {
+async function getLastMsgId({ name }) {
   try {
-    const { lastMsgId } = await models.Channel.findOne({ name: channel });
+    const { lastMsgId } = await models.Channel.findOne({ name });
     return lastMsgId;
   } catch (err) {
     console.log(
       `file not found so making a empty one and adding default value ${err}`
     );
-    await updateLastMsgId(channel, 1);
+    await updateLastMsgId(name, 1);
     return 1;
   }
 }
 
 const getChatHistory = async chat => {
-  const lastIdofMsgs = await getLastMsgId(chat.name);
+  let lastIdofMsgs = await getLastMsgId(chat);
   // console.log(chat);
 
   const max = config.telegram.msgHistory.maxMsg;
@@ -82,8 +85,6 @@ const getChatHistory = async chat => {
 
   try {
     do {
-      // console.log(chat.channel_id);
-
       let history = await telegram('messages.getHistory', {
         peer: {
           _: 'inputPeerChannel',
@@ -96,18 +97,27 @@ const getChatHistory = async chat => {
       });
 
       messages = history.messages;
-      console.log(messages);
-
-      asyncForEach(messages, chat.channel_id);
 
       full = full.concat(messages);
       messages.length > 0 && (offsetId = messages[0].id);
-      // console.log(full.length);
       if (messages.length > 0) {
-        await models.Channel.updateLastMsgId(chat.username, messages[0].id);
+        await updateLastMsgId(chat, messages[0].id);
       }
       history = null;
     } while (messages.length === limit && full.length < max);
+    const showNew = full.filter(({ id }) => id > lastIdofMsgs);
+    const noRepeats = uniqueArray(showNew, 'id');
+
+    if (noRepeats.length > 0) {
+      saveEachMessage(noRepeats, chat);
+      console.log('saved to server: ');
+      console.log('Last msg id ', messages[0].id);
+    }
+    lastIdofMsgs = await getLastMsgId(chat);
+    const dt = new Date();
+    const hours = dt.getHours();
+    const mins = dt.getMinutes();
+    console.log(`${hours}:${mins} - [${lastIdofMsgs}]`);
   } catch (err) {
     console.log(err);
   }
