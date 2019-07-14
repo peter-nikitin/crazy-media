@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const postSchema = new mongoose.Schema({
-  id: {
+  post_id: {
     type: String,
     unique: true,
   },
@@ -16,7 +16,7 @@ const postSchema = new mongoose.Schema({
   },
   channel: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
+    ref: 'Channel',
   },
 });
 
