@@ -48,7 +48,7 @@ telegram();
 // Show 404 page.
 app.use(notFound());
 
-const eraseDatabaseOnSync = true;
+const eraseDatabaseOnSync = false;
 
 // Start server listening.
 connectToDB()
