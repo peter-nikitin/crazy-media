@@ -28,6 +28,8 @@ async function saveEachMessage(messages, { _id, name }) {
           url,
           imgUrl,
           channel: _id,
+          views: messages[i].views,
+          showen: false,
         });
 
         await newPost.save();

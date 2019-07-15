@@ -18,6 +18,15 @@ const postSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Channel',
   },
+  views: {
+    type: Number,
+  },
+  showen: {
+    type: Boolean,
+  },
+  date: {
+    type: Number,
+  },
 });
 
 const Post = mongoose.model('Post', postSchema);
