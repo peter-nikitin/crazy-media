@@ -1,7 +1,10 @@
 const { models } = require('../db');
 
-const getPosts = count => {
-  models.Post.find({
+const savePostsToView = function savePostsToView(err, posts) {};
+
+const getPosts = async count => {
+  const resultPost = {};
+  await models.Post.find({
     showen: false,
   })
     .limit(count)
@@ -9,9 +12,19 @@ const getPosts = count => {
       date: -1,
     })
     .exec(function(err, post) {
-      if (err) return handleError(err);
-      // Prints "Space Ghost is a talk show host."
-      console.log(`${post}`);
+      post.forEach(function(post) {
+        resultPost[post.post_id] = post;
+      });
     });
+  //  console.log(resultPost);
+  return resultPost;
 };
 module.exports = getPosts;
+
+// function(err, post) {
+//   if (err) return handleError(err);
+//   // Prints "Space Ghost is a talk show host."
+//   return
+//   console.log(`${post}`);
+//   // Object.assign({}, post, resultPost);
+// }

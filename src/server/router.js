@@ -1,15 +1,16 @@
 const express = require('express');
 const autoroutes = require('./internals/autoroutes');
-
-const getPosts = require('./utils/getPostsFromDB');
+const { postsToShow } = require('./utils/telegram/index.js');
 
 const router = express.Router();
 
 autoroutes(router);
 
 router.get('/', (req, res) => {
-  getPosts(5);
-  res.render('index');
+  console.log(postsToShow);
+  res.render('index', {
+    ...postsToShow,
+  });
 });
 
 module.exports = router;
