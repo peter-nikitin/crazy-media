@@ -8,7 +8,7 @@ const { notFound } = require('./middlewares');
 const config = require('./config');
 const { connectToDB, models } = require('./db');
 const loadChannels = require('./helpers/loadChannels');
-const telegram = require('./utils/telegram/index.js');
+const { tgGetPostFromChannels } = require('./utils/telegram/index.js');
 
 // Initialize Express app.
 const app = express();
@@ -43,7 +43,7 @@ app.use('/', express.static(config.static));
 // Mount routes.
 app.use('/', router);
 
-telegram();
+tgGetPostFromChannels();
 
 // Show 404 page.
 app.use(notFound());
