@@ -30,6 +30,7 @@ async function saveEachMessage(messages, { _id, name }) {
           channel: _id,
           views: messages[i].views,
           showen: false,
+          date: messages[i].date,
         });
 
         await newPost.save();
