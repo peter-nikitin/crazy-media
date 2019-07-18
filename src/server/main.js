@@ -8,7 +8,8 @@ const { notFound } = require('./middlewares');
 const config = require('./config');
 const { connectToDB, models } = require('./db');
 const loadChannels = require('./helpers/loadChannels');
-const { tgGetPostFromChannels } = require('./utils/telegram/index.js');
+const GetPostFromTelegram = require('./utils/telegram/index.js');
+const { savePostsToView } = require('./utils/getPostsFromDB');
 
 // Initialize Express app.
 const app = express();
@@ -43,12 +44,13 @@ app.use('/', express.static(config.static));
 // Mount routes.
 app.use('/', router);
 
-tgGetPostFromChannels();
+GetPostFromTelegram();
+savePostsToView(5);
 
 // Show 404 page.
 app.use(notFound());
 
-const eraseDatabaseOnSync = false;
+const eraseDatabaseOnSync = true;
 
 // Start server listening.
 connectToDB()

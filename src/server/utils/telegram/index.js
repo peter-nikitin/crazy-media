@@ -1,5 +1,4 @@
 const cron = require('node-cron');
-const getPosts = require('../getPostsFromDB');
 
 const getChatHistory = require('./getChatHistory');
 const { checkLogin } = require('./node-storage');
@@ -13,9 +12,13 @@ const run = async chat => {
   }
 };
 
-const tgGetPostFromChannels = async () => {
+const GetPostFromTelegram = async () => {
+  console.log(`start loading`);
   await checkLogin();
   const chat = await models.Channel.find({});
+  chat.forEach(element => {
+    run(element);
+  });
   cron.schedule('1 * * * *', () => {
     chat.forEach(element => {
       run(element);
@@ -23,6 +26,4 @@ const tgGetPostFromChannels = async () => {
   });
 };
 
-const postsToShow = getPosts(5);
-
-module.exports = { tgGetPostFromChannels, postsToShow };
+module.exports = GetPostFromTelegram;

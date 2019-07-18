@@ -1,25 +1,30 @@
 const { models } = require('../db');
 
-const savePostsToView = function savePostsToView(err, posts) {};
+const selectedPosts = {};
 
-const getPosts = async count => {
-  const resultPost = {};
-  await models.Post.find({
+const getPosts = count => {
+  return models.Post.find({
     showen: false,
   })
     .limit(count)
     .sort({
       date: -1,
     })
-    .exec(function(err, post) {
-      post.forEach(function(post) {
-        resultPost[post.post_id] = post;
+    .exec(function(err, posts) {
+      posts.forEach(elem => {
+        selectedPosts[elem] = elem;
       });
+      // console.log(selectedPosts);
     });
-  //  console.log(resultPost);
-  return resultPost;
 };
-module.exports = getPosts;
+
+const savePostsToView = count => {
+  const resultPosts = getPosts(count);
+  // Object.assign({}, resultPosts, posts);
+  return resultPosts;
+};
+console.log(selectedPosts);
+module.exports = { savePostsToView, selectedPosts };
 
 // function(err, post) {
 //   if (err) return handleError(err);
