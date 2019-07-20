@@ -1,13 +1,12 @@
 const express = require('express');
 const autoroutes = require('./internals/autoroutes');
-const { selectedPosts } = require('./utils/getPostsFromDB');
+const { selectedPosts } = require('./helpers/getPostsFromDB');
 
 const router = express.Router();
 
 autoroutes(router);
 
 router.get('/', (req, res) => {
-  console.log(selectedPosts);
   res.render('index', {
     selectedPosts,
   });
