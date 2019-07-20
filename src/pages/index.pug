@@ -5,8 +5,10 @@ block content
   main.content
     each item in selectedPosts
       article.content__article(style="left:17%; top:15%")
-        img.content__image(src=item.imgUrl, alt='Фотка не пойми чего')
-        p.content__text= item.message
-        //- p.content__text.content__text--channel= item.channel.title
+        if item.imgUrl
+          img.content__image(src=item.imgUrl, alt='Фотка не пойми чего')
+        if item.message
+          p.content__text= item.message
+        p.content__text.content__text--channel= item.channelTitle
   //- script.
   //-   console.log(selectedPosts);
