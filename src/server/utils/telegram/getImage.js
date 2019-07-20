@@ -13,7 +13,7 @@ const saveImage = async (fileName, file) => {
         if (err) {
           console.log(`There was an error writing the image ${err}`);
         } else {
-          console.log(`Image from post ${fileName} was written`);
+          // console.log(`Image from post ${fileName} was written`);
         }
       }
     );
