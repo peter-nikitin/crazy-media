@@ -1,2 +1,2 @@
 import '../styles/main.scss';
-import './bubbles';
+import './dragable';

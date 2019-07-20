@@ -1,8 +1,12 @@
 extends layouts/main.pug
 
 block content
-  //- each item in postsToShow
-  //-   li=item
-
+  include /partials/timer.pug
+  main.content
+    each item in selectedPosts
+      article.content__article(style="left:17%; top:15%")
+        img.content__image(src=item.imgUrl, alt='Фотка не пойми чего')
+        p.content__text= item.message
+        //- p.content__text.content__text--channel= item.channel.title
   //- script.
-  //-   console.log(postsToShow);
+  //-   console.log(selectedPosts);
