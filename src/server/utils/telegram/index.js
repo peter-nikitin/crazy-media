@@ -24,7 +24,8 @@ const GetPostFromTelegram = async () => {
       run(element);
     });
   });
-  savePostsToView(5);
+  // setInterval(function(){ alert("Hello"); }, 3000);
+  savePostsToView(7);
 };
 
 module.exports = GetPostFromTelegram;
