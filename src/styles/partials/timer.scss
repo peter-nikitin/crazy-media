@@ -1,0 +1,32 @@
+.timer {
+  font-family: 'NectoMono', sans-serif;
+
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+  mix-blend-mode: exclusion;
+
+  @media #{$tablet} {
+    position: absolute;
+  }
+}
+
+.timer__numbers {
+  font-size: 68px;
+  font-weight: 400;
+  text-align: center;
+  color: #fff;
+
+  @media #{$tablet} {
+    font-size: 80px;
+  }
+}
+
+.timer__text {
+  font-size: 20px;
+  font-weight: 400;
+  text-align: center;
+  color: #404040;
+}

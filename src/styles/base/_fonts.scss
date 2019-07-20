@@ -1,3 +1,14 @@
 @import 'base/mixins';
 
-@include font-face('Open Sans', 'open-sans-regular');
+@include font-face('NectoMono', 'NectoMono-Regular');
+
+// @font-face {
+//   font-family: 'NectoMono';
+//   font-weight: 400;
+//   font-style: normal;
+//   src: url('../fonts/NectoMono-Regular.eot');
+//   src: url('../fonts/NectoMono-Regular.eot?#iefix') format('embedded-opentype'),
+//       url('../fonts/NectoMono-Regular.woff2') format('woff2'),
+//       url('../fonts/NectoMono-Regular.woff') format('woff'),
+//       url('../fonts/NectoMono-Regular.ttf') format('truetype');
+// }

@@ -1,2 +1,18 @@
 $fonts-path: '/fonts';
 $images-path: '/images';
+
+$mobile: '(max-width: 639px)';
+$tablet: '(min-width: 640px)';
+$desktop: '(min-width: 1025px)';
+
+$font-stack: 'Lato', Arial, sans-serif;
+
+$color-primary: #2b87db;
+$color-secondary: #e84260;
+
+$color-white: #ffffff;
+$color-green: #2e9e00;
+
+$color-text: #000000;
+$color-link: #333333;
+$color-hover: #e84260;
