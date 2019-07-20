@@ -5,7 +5,11 @@ const Post = require('./models/post');
 
 const config = require('../config');
 
-const connectToDB = () => mongoose.connect(config.mongoPath);
+const connectToDB = () =>
+  mongoose.connect(
+    config.mongoPath,
+    { useNewUrlParser: true }
+  );
 
 const models = { Channel, Post };
 
