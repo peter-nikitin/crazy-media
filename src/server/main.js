@@ -9,7 +9,6 @@ const config = require('./config');
 const { connectToDB, models } = require('./db');
 const loadChannels = require('./helpers/loadChannels');
 const GetPostFromTelegram = require('./utils/telegram/index.js');
-const { savePostsToView } = require('./utils/getPostsFromDB');
 
 // Initialize Express app.
 const app = express();
@@ -44,13 +43,10 @@ app.use('/', express.static(config.static));
 // Mount routes.
 app.use('/', router);
 
-GetPostFromTelegram();
-savePostsToView(5);
-
 // Show 404 page.
 app.use(notFound());
 
-const eraseDatabaseOnSync = true;
+const eraseDatabaseOnSync = false;
 
 // Start server listening.
 connectToDB()
@@ -61,9 +57,9 @@ connectToDB()
         models.Post.deleteMany({}),
       ]);
 
-      loadChannels();
+      await loadChannels();
     }
-
+    await GetPostFromTelegram();
     app.listen(config.port, config.host, error => {
       if (error) throw error;
 
