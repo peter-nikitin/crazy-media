@@ -47,24 +47,9 @@ app.use('/', router);
 app.use(notFound());
 
 // Start server listening.
-connectToDB()
-  .then(async () => {
-    if (config.eraseDatabaseOnSync) {
-      await Promise.all([
-        models.Channel.deleteMany({}),
-        models.Post.deleteMany({}),
-      ]);
+app.listen(config.port, config.host, error => {
+  if (error) throw error;
 
-      await loadChannels();
-    }
-    await GetPostFromTelegram();
-    app.listen(config.port, config.host, error => {
-      if (error) throw error;
-
-      // eslint-disable-next-line
-      console.log(`Listening at ${url}...`);
-    });
-  })
-  .catch(err => {
-    console.log(err);
-  });
+  // eslint-disable-next-line
+  console.log(`Listening at ${url}...`);
+});
