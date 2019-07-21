@@ -46,12 +46,10 @@ app.use('/', router);
 // Show 404 page.
 app.use(notFound());
 
-const eraseDatabaseOnSync = false;
-
 // Start server listening.
 connectToDB()
   .then(async () => {
-    if (eraseDatabaseOnSync) {
+    if (config.eraseDatabaseOnSync) {
       await Promise.all([
         models.Channel.deleteMany({}),
         models.Post.deleteMany({}),

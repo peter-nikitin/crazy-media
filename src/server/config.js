@@ -30,7 +30,15 @@ module.exports = {
     '!**/{layouts,partials,mixins}/**/*.pug',
   ],
 
+  // time for interval
+  interval: 7 * 60 * 1000,
+  postsCount: 14,
+
+  // path to mongo
   mongoPath: 'mongodb://127.0.0.1/crazy_media',
+
+  // refrash db
+  eraseDatabaseOnSync: false,
 
   // Telegram settings
   telegram: {
@@ -40,7 +48,7 @@ module.exports = {
     storage: process.env.TELEGRAM_FILE,
     devServer: false,
     msgHistory: {
-      maxMsg: 20,
+      maxMsg: 30,
       limit: 10,
     },
     getChat: {
