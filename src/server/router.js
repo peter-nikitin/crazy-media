@@ -1,6 +1,6 @@
 const express = require('express');
 const autoroutes = require('./internals/autoroutes');
-const { selectedPosts } = require('./helpers/getPostsFromDB');
+const selectedPosts = require('./db/selectedPosts');
 const config = require('./config');
 
 const { interval } = config;
