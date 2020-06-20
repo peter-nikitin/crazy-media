@@ -78,7 +78,7 @@
     "globby": "8.0.1",
     "jquery": "3.5.0",
     "mongodb": "^3.2.7",
-    "mongoose": "^5.6.4",
+    "mongoose": "^5.7.5",
     "morgan": "1.9.1",
     "mtproto-storage-fs": "^0.3.1",
     "node-cron": "^2.0.3",
