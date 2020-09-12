@@ -82,7 +82,7 @@
     "morgan": "1.9.1",
     "mtproto-storage-fs": "^0.3.1",
     "node-cron": "^2.0.3",
-    "node-fetch": "^2.2.0",
+    "node-fetch": "^2.6.1",
     "normalize.css": "8.0.1",
     "prompt": "^1.0.0",
     "pug": "2.0.3",
